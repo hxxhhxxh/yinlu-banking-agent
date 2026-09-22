@@ -1,0 +1,25 @@
+# Render 一键部署蓝图（Blueprint）
+# 用法：Render 控制台 → New → Blueprint → 选择本仓库 → Apply
+services:
+  - type: web
+    name: yinshu-banking-agent
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: singapore          # 离国内较近；可选 oregon / frankfurt / ohio
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 8787
+      # 可选：接入大模型（留空则使用内置本地意图引擎，离线可用）
+      # - key: LLM_BASE_URL
+      #   value: https://api.deepseek.com/v1
+      # - key: LLM_MODEL
+      #   value: deepseek-chat
+      # - key: LLM_API_KEY
+      #   sync: false            # 在 Render 控制台以 Secret 方式填写，不要写进仓库
