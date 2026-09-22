@@ -389,13 +389,17 @@ server.on('error', (e) => {
   process.exit(1);
 });
 
-server.listen(config.PORT, '127.0.0.1', () => {
+// 监听地址：本地默认 127.0.0.1（安全）；容器/云平台通过 HOST=0.0.0.0 显式开放
+const HOST = process.env.HOST || '127.0.0.1';
+
+server.listen(config.PORT, HOST, () => {
   const s = store.get();
   const line = '─'.repeat(58);
   console.log(line);
   console.log('  银枢·AI银行副驾  YinShu AI Banking Copilot  v0.1.0');
   console.log(line);
-  console.log(`  服务地址 : http://127.0.0.1:${config.PORT}`);
+  console.log(`  服务地址 : http://${HOST === '0.0.0.0' ? 'localhost' : HOST}:${config.PORT}`);
+  console.log(`  监听地址 : ${HOST}${HOST === '0.0.0.0' ? '（容器/云平台模式）' : '（仅本机可访问）'}`);
   console.log(`  推理引擎 : ${orchestrator.engineName() === 'llm' ? `大模型（${config.llm.model}）` : '本地意图引擎（离线演示模式）'}`);
   console.log(`  沙箱数据 : ${s.cards.length} 张卡 / ${s.transactions.length} 条账单 / ${s.payees.length} 个常用收款人 / ${s.subscriptions.length} 个订阅 / ${s.products.length} 款理财`);
   console.log(`  数据模式 : 本地模拟数据，未接入任何真实支付接口`);
