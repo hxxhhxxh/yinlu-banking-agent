@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>银枢·AI银行副驾 · IM 渠道演示</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Microsoft YaHei", system-ui, sans-serif; background: #E9EDF2; display: flex; justify-content: center; height: 100vh; }
+  .phone { width: 430px; height: 100vh; max-height: 860px; background: #F5F6F8; display: flex; flex-direction: column; box-shadow: 0 8px 40px rgba(16,24,40,.18); }
+  .hd { background: #0B4FA8; color: #fff; padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+  .hd .avatar { width: 34px; height: 34px; border-radius: 50%; background: #fff2; display: grid; place-items: center; font-size: 16px; }
+  .hd b { font-size: 15px; display: block; }
+  .hd small { opacity: .8; font-size: 11px; }
+  .plat { margin-left: auto; font-size: 11px; background: #fff2; border: 1px solid #fff4; border-radius: 999px; padding: 3px 9px; }
+  .chat { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+  .msg { display: flex; gap: 8px; max-width: 88%; }
+  .msg.me { align-self: flex-end; flex-direction: row-reverse; }
+  .msg .av { width: 30px; height: 30px; border-radius: 6px; display: grid; place-items: center; font-size: 12px; flex: 0 0 auto; background: #0B4FA8; color: #fff; }
+  .msg.me .av { background: #12B76A; }
+  .bub { background: #fff; padding: 9px 12px; border-radius: 10px; font-size: 13.5px; line-height: 1.62; white-space: pre-wrap; word-break: break-word; }
+  .msg.me .bub { background: #D3F0DC; }
+  .bub strong { color: #0B4FA8; }
+  .bub table { border-collapse: collapse; margin: 6px 0; font-size: 12px; }
+  .bub th, .bub td { border: 1px solid #E4E7EC; padding: 3px 7px; text-align: left; }
+  .composer { display: flex; gap: 8px; padding: 10px 12px 14px; background: #fff; border-top: 1px solid #E4E7EC; }
+  .composer input { flex: 1; border: 1px solid #E4E7EC; border-radius: 8px; padding: 9px 12px; font-size: 13.5px; outline: none; }
+  .composer input:focus { border-color: #0B4FA8; }
+  .composer button { background: #0B4FA8; color: #fff; border: none; border-radius: 8px; padding: 0 16px; font-size: 13.5px; cursor: pointer; }
+  .tip { font-size: 11.5px; color: #667085; text-align: center; padding-bottom: 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px 10px; }
+  .chips span { font-size: 11.5px; background: #fff; border: 1px solid #E4E7EC; border-radius: 999px; padding: 4px 9px; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="hd">
+    <div class="avatar">🏦</div>
+    <div><b>银枢·AI银行副驾</b><small>智能业务助手（IM 渠道）</small></div>
+    <span class="plat" id="plat">企业 IM</span>
+  </div>
+  <div class="chat" id="chat"></div>
+  <div class="chips" id="chips"></div>
+  <div class="composer">
+    <input id="input" placeholder="像聊天一样说出需求，例如：给我妈转八百块交物业费" maxlength="500">
+    <button id="send">发送</button>
+  </div>
+  <div class="tip">同一套 Agent 内核，仅通道不同；红色操作会引导到 App 完成人脸/短信</div>
+</div>
+<script>
+const $ = (s) => document.querySelector(s);
+const BASE = location.origin;
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function md(text) {
+  const lines = String(text || '').split('\n');
+  const out = [];
+  let i = 0;
+  while (i < lines.length) {
+    if (/^\s*\|/.test(lines[i]) && i + 1 < lines.length && /^\s*\|[\s:\-|]+\|$/.test(lines[i + 1])) {
+      const head = lines[i].split('|').slice(1, -1);
+      i += 2;
+      const rows = [];
+      while (i < lines.length && /^\s*\|/.test(lines[i])) { rows.push(lines[i].split('|').slice(1, -1)); i++; }
+      out.push('<table><tr>' + head.map((h) => '<th>' + esc(h.trim()) + '</th>').join('') + '</tr>' +
+        rows.map((r) => '<tr>' + r.map((c) => '<td>' + esc(c.trim()) + '</td>').join('') + '</tr>').join('') + '</table>');
+      continue;
+    }
+    let line = esc(lines[i]);
+    line = line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/`([^`]+)`/g, '<code>$1</code>');
+    out.push(line);
+    i++;
+  }
+  return out.join('\n');
+}
+function bubble(role, text) {
+  const div = document.createElement('div');
+  div.className = 'msg ' + (role === 'me' ? 'me' : '');
+  div.innerHTML = `<div class="av">${role === 'me' ? '我' : '银'}</div><div class="bub">${role === 'me' ? esc(text) : md(text)}</div>`;
+  $('#chat').appendChild(div);
+  $('#chat').scrollTop = $('#chat').scrollHeight;
+}
+async function send(text) {
+  const t = String(text || '').trim();
+  if (!t) return;
+  bubble('me', t);
+  $('#input').value = '';
+  const typing = document.createElement('div');
+  typing.className = 'msg';
+  typing.innerHTML = '<div class="av">银</div><div class="bub">正在处理…</div>';
+  $('#chat').appendChild(typing);
+  $('#chat').scrollTop = $('#chat').scrollHeight;
+  try {
+    const res = await fetch(BASE + '/api/im/webhook', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ platform: '企业IM', from: 'demo-user', text: t }),
+    });
+    const data = await res.json();
+    typing.remove();
+    bubble('agent', data.reply || data.error || '（无回复）');
+  } catch (e) {
+    typing.remove();
+    bubble('agent', '请求失败：' + e.message + '\n\n请确认后端服务已启动（npm start）。');
+  }
+}
+$('#send').addEventListener('click', () => send($('#input').value));
+$('#input').addEventListener('keydown', (e) => { if (e.key === 'Enter') send($('#input').value); });
+['储蓄卡还有多少钱', '给我妈转八百块交物业费', '给我妈转两千块交物业费', '有哪些订阅在扣我钱', '回退上一步'].forEach((q) => {
+  const s = document.createElement('span');
+  s.textContent = q;
+  s.addEventListener('click', () => send(q));
+  $('#chips').appendChild(s);
+});
+bubble('agent', '你好，我是**银枢·AI银行副驾**（IM 渠道演示）。\n\n这里用文字通道接入同一套 Agent 内核：\n- 查询类直接回答\n- 🟡 黄色操作回「确认 PA0001」即可执行\n- 🔴 红色操作会提示你去 **App** 完成人脸 + 短信（IM 不支持现场因子）');
+</script>
+</body>
+</html>

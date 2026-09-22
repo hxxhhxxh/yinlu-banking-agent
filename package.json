@@ -1,0 +1,20 @@
+{
+  "name": "yinshu-banking-agent",
+  "version": "0.1.0",
+  "private": true,
+  "description": "银枢·AI银行副驾 —— 可本地运行、可现场演示的 AI Banking Agent（安全 + 体验）",
+  "type": "commonjs",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js --dev",
+    "selftest": "node scripts/selftest.js",
+    "verify": "node scripts/verify-real-chain.js",
+    "rehearsal": "node scripts/rehearsal.js",
+    "reset": "node scripts/reset.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {}
+}

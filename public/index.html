@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>银枢·AI银行副驾 | YinShu AI Banking Copilot</title>
+<link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+<div class="app">
+  <!-- ============ 顶栏 ============ -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">银</div>
+      <div class="brand-text">
+        <h1>银枢 · AI银行副驾</h1>
+        <span class="sub">AI Banking Copilot · 安全优先的智能金融助手</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="badge badge-sandbox" title="所有数据均为本地模拟数据，未接入任何真实支付接口">沙箱演示环境</span>
+      <span class="badge" id="engineBadge">引擎加载中…</span>
+      <button class="btn-ghost" id="btnReset" title="恢复演示初始数据">重置演示数据</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- ============ 左：对话区 ============ -->
+    <section class="panel chat-panel">
+      <div class="panel-head">
+        <div class="panel-title">
+          <span class="dot dot-live"></span> 智能对话
+          <span class="hint">Agent 的思考过程会实时展示</span>
+        </div>
+        <button class="btn-ghost sm" id="btnClear">清空对话</button>
+      </div>
+
+      <div class="chat-scroll" id="chatScroll">
+        <div class="msg agent">
+          <div class="avatar">银</div>
+          <div class="bubble">
+            <p>你好，我是<strong>银枢·AI银行副驾</strong>。你可以直接用大白话告诉我要办什么，我会<strong>先理解意图、再规划任务、调用银行工具执行，最后把结果告诉你</strong>。</p>
+            <p>涉及资金变动、理财申购、挂失这类操作，我一定会先把<strong>要做什么、金额多少、风险是什么</strong>讲清楚，请你确认后才执行。</p>
+            <p>不妨先试试下面这几句 👇</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chips" id="chips">
+        <button class="chip" data-q="储蓄卡还有多少钱">储蓄卡还有多少钱</button>
+        <button class="chip" data-q="我有几张卡，额度分别多少">我有几张卡，额度多少</button>
+        <button class="chip" data-q="上个月吃饭花了多少">上个月吃饭花了多少</button>
+        <button class="chip" data-q="帮我看看给陈小雨转两万有没有风险">给陈小雨转两万有没有风险</button>
+        <button class="chip" data-q="给我妈转两千块交物业费">给我妈转两千块交物业费</button>
+        <button class="chip" data-q="有哪些理财可以买">有哪些理财可以买</button>
+        <button class="chip" data-q="我的卡是不是被盗刷了">我的卡是不是被盗刷了</button>
+      </div>
+
+      <form class="composer" id="composer">
+        <div class="composer-box">
+          <textarea id="input" rows="1" maxlength="500" placeholder="用大白话说出你的需求，例如：给我妈转两千块交物业费…"></textarea>
+          <span class="counter" id="counter"></span>
+        </div>
+        <button type="submit" id="btnSend" class="btn-primary">发送</button>
+      </form>
+    </section>
+
+    <!-- ============ 右：仿真手机银行 ============ -->
+    <section class="panel bank-panel">
+      <div class="bank-frame">
+        <div class="bank-head">
+          <div class="bank-user">
+            <div class="mini-avatar" id="userAvatar">黄</div>
+            <div>
+              <div class="bank-user-name" id="userName">—</div>
+              <div class="bank-user-meta" id="userMeta">—</div>
+            </div>
+          </div>
+          <div class="bank-assets">
+            <div class="assets-label">储蓄卡可用资金</div>
+            <div class="assets-value" id="totalAssets">¥ —</div>
+          </div>
+        </div>
+
+        <div id="pendingBanner"></div>
+
+        <nav class="tabs" id="tabs">
+          <button class="tab active" data-tab="cards">我的卡</button>
+          <button class="tab" data-tab="bills">账单</button>
+          <button class="tab" data-tab="wealth">理财</button>
+          <button class="tab" data-tab="security">安全中心</button>
+        </nav>
+
+        <div class="tab-body">
+          <!-- 我的卡 -->
+          <div class="tab-pane active" data-pane="cards">
+            <div class="cards-carousel" id="cardsCarousel"></div>
+            <div id="riskBanner"></div>
+            <div id="giftPanel"></div>
+            <div id="syncBanner"></div>
+            <div class="section-title">快速入口</div>
+            <div class="quick-grid">
+              <div class="quick" data-q="给我的常用收款人转账"><span>↗</span>转账汇款</div>
+              <div class="quick" data-q="看看我的账单分析"><span>▤</span>账单分析</div>
+              <div class="quick" data-q="有哪些理财可以买"><span>◈</span>理财超市</div>
+              <div class="quick" data-q="我的卡是不是被盗刷了"><span>⛨</span>安全中心</div>
+            </div>
+            <div class="section-title">最近转账 <span class="section-hint" id="transferHint"></span></div>
+            <div class="transfer-list" id="transferList"></div>
+            <div class="section-title">卡片业务 <span class="section-hint" id="cardOpsHint"></span></div>
+            <div id="cardOps"></div>
+            <div class="section-title">最近交易 <span class="section-hint" id="txnCountHint"></span></div>
+            <div class="txn-list" id="txnList"></div>
+          </div>
+
+          <!-- 账单 -->
+          <div class="tab-pane" data-pane="bills">
+            <div id="billsBody"></div>
+          </div>
+
+          <!-- 理财 -->
+          <div class="tab-pane" data-pane="wealth">
+            <div id="wealthBody"></div>
+          </div>
+
+          <!-- 安全中心 -->
+          <div class="tab-pane" data-pane="security">
+            <div id="securityBody"></div>
+            <div class="section-title">操作日志（最近）</div>
+            <div class="audit-list" id="auditList"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
