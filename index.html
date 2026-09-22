@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>银枢 · AI银行副驾 | 安全优先的智能金融助手</title>
+<meta name="description" content="银枢·AI银行副驾：面向青年客群的手机银行 AI 智能体，六大场景全覆盖，把风控与适当性做成 Agent 的能力边界。">
+<style>
+  :root { --blue-d:#0B3D80; --blue:#0B4FA8; --blue-l:#E8F0FE; --ink:#101828; --muted:#667085; --line:#E4E7EC; --warn:#B54708; --ok:#067647; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif; color:var(--ink); background:#F7F9FC; line-height:1.7; }
+  a { color:var(--blue); }
+  .wrap { max-width:1060px; margin:0 auto; padding:0 22px; }
+  header { background:linear-gradient(135deg,#0B3D80,#0B4FA8 55%,#1A73E8); color:#fff; padding:64px 0 56px; }
+  header h1 { margin:0 0 10px; font-size:40px; letter-spacing:1px; }
+  header p.lead { margin:0; font-size:17px; opacity:.94; max-width:820px; }
+  .badges { margin-top:22px; display:flex; flex-wrap:wrap; gap:9px; }
+  .badge { font-size:12.5px; padding:5px 12px; border-radius:999px; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.32); }
+  section { padding:44px 0; border-bottom:1px solid var(--line); }
+  section:last-of-type { border-bottom:none; }
+  h2 { font-size:22px; margin:0 0 6px; color:var(--blue-d); }
+  h2 .hint { font-size:13px; font-weight:400; color:var(--muted); margin-left:8px; }
+  h3 { font-size:16px; margin:22px 0 8px; color:var(--blue); }
+  p { margin:10px 0; }
+  .grid { display:grid; gap:14px; margin-top:18px; }
+  .g3 { grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); }
+  .g2 { grid-template-columns:repeat(auto-fit,minmax(360px,1fr)); }
+  .card { background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px 18px; box-shadow:0 1px 2px rgba(16,24,40,.04); }
+  .card h4 { margin:0 0 6px; font-size:15px; color:var(--blue-d); }
+  .card p { margin:0; font-size:13.5px; color:#344054; }
+  .tag { display:inline-block; font-size:11.5px; padding:2px 8px; border-radius:999px; border:1px solid; margin:0 6px 6px 0; }
+  .t-green { color:var(--ok); border-color:#A6F4C5; background:#ECFDF3; }
+  .t-yellow { color:var(--warn); border-color:#FEDF89; background:#FFFAEB; }
+  .t-red { color:#B42318; border-color:#FECDCA; background:#FEF3F2; }
+  table { width:100%; border-collapse:collapse; margin-top:14px; font-size:13.5px; background:#fff; }
+  th,td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+  th { background:var(--blue-l); color:var(--blue-d); font-weight:600; }
+  .shot { width:100%; border:1px solid var(--line); border-radius:10px; margin-top:14px; background:#fff; }
+  .meta { font-size:12.5px; color:var(--muted); margin-top:8px; }
+  code { background:#F2F4F7; padding:2px 6px; border-radius:5px; font-size:13px; }
+  pre { background:#0B1B33; color:#E6EDF7; padding:14px 16px; border-radius:10px; overflow:auto; font-size:13px; }
+  footer { padding:30px 0 50px; font-size:13px; color:var(--muted); }
+  .note { background:#FFFAEB; border:1px solid #FEDF89; border-radius:10px; padding:12px 14px; font-size:13.5px; color:#7A2E0E; margin-top:16px; }
+  .ok-line { color:var(--ok); font-weight:600; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>银枢 · AI银行副驾</h1>
+    <p class="lead"><b>安全优先的智能金融助手</b>：用户用一句大白话办完银行业务，同时把风控、适当性与合规留痕做进 Agent 的能力边界——让 AI 能把事办完，但办不了不该办的事。</p>
+    <div class="badges">
+      <span class="badge">六大场景全覆盖</span>
+      <span class="badge">三级权限：绿 / 黄 / 红</span>
+      <span class="badge">429 项自动化断言</span>
+      <span class="badge">零第三方依赖 · 可离线运行</span>
+      <span class="badge">沙箱演示环境</span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>作品简介 <span class="hint">面向青年客群的手机银行 AI 智能体</span></h2>
+    <p>银枢·AI银行副驾让用户不必在层层菜单里找入口：说一句「给我妈转八百块交物业费」「上个月的钱都花哪了」「下周我妈生日，帮我安排一下」，Agent 就会自主完成 <b>意图理解 → 任务规划 → 调用银行工具 → 结果反馈</b>。</p>
+    <p>金融场景的特殊性在于：体验再好，一旦安全失守就是零分。因此本作品把安全做成一等公民——<b>该拦的拦得住，该拒的拒得掉，该办的一步到位</b>。</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>六大核心场景 <span class="hint">赛题要求至少 3 个，本作品全部落地</span></h2>
+    <div class="grid g3">
+      <div class="card"><h4>① 智能转账</h4><p>按人名/称谓/手机号尾号/备注找收款人；转账前展示收款人·开户行·金额；定时转账、AA 拆分收款、T+0 撤销。</p></div>
+      <div class="card"><h4>② 账单分析</h4><p>消费分类统计、环比、消费时段分布、月度与年度报告；<b>评分制异常识别</b>（深夜大额/异地/境外/金额突增/超大额）。</p></div>
+      <div class="card"><h4>③ 理财操作</h4><p>5 题风险测评 → 适当性过滤 → 推荐与对比 → 一键申购/赎回（含风险提示朗读）。</p></div>
+      <div class="card"><h4>④ 卡片管理</h4><p>实体卡/虚拟卡申请、额度调整、交易限额、冻结与解冻、挂失与解挂。</p></div>
+      <div class="card"><h4>⑤ 订阅管理</h4><p>从真实流水<b>自动识别周期性扣费</b>、续费倒计时提醒、一键取消订阅。</p></div>
+      <div class="card"><h4>⑥ 跨场景联动</h4><p>一句话安排生日：主动补问 → 当月锁定资金 → 生日前 2 天自动下单鲜花与蛋糕 → 生成配送提醒。</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>安全体系：把合规做成门禁 <span class="hint">赛题「实现优先级：高」</span></h2>
+    <h3>三级权限分级</h3>
+    <table>
+      <tr><th style="width:120px">级别</th><th>覆盖操作</th><th style="width:230px">执行策略</th></tr>
+      <tr><td><span class="tag t-green">🟢 绿色</span></td><td>余额 / 明细 / 账单 / 订阅 / 持仓 / 收益查询 / 风控预检</td><td>确认意图后直接执行，写审计</td></tr>
+      <tr><td><span class="tag t-yellow">🟡 黄色</span></td><td>小额转账（<b>当日累计 ≤ ¥1,000</b>）、订阅取消、虚拟卡申请、限额调整、冻结解冻</td><td>展示关键信息 + 用户确认</td></tr>
+      <tr><td><span class="tag t-red">🔴 红色</span></td><td>大额转账（<b>当日累计 &gt; ¥1,000</b>）、交易密码修改、挂失/解挂、理财申购赎回、额度调整</td><td><b>短信验证码 + 人脸识别</b>双因子；对话里回复「确认」无效</td></tr>
+    </table>
+    <h3>五大安全机制</h3>
+    <div class="grid g2">
+      <div class="card"><h4>风控规则引擎（10 条）</h4><p>收款人白名单、涉诈黑名单（<b>阻断级拦截</b>）、金额阈值、夜间大额、整数大额、余额不足、单笔/日累计限额、收款人不存在、高风险话术。</p></div>
+      <div class="card"><h4>适当性管理</h4><p>测评等级不匹配即拒绝；推荐列表里不会出现高风险产品；<b>拒绝动作同样写审计</b>。</p></div>
+      <div class="card"><h4>全程留痕</h4><p>成功/未就绪/失败/拒绝/取消/未识别意图六类全部入库，并记录<b>完整决策链路</b>（规划 → 工具调用）。</p></div>
+      <div class="card"><h4>注入防御</h4><p>识别 10 类越权诱导（忽略指令、跳过确认、免验证、伪造系统消息…）→ 告警 + 安全审计；安全边界在服务端，<b>结构上无绕过路径</b>。</p></div>
+      <div class="card"><h4>异常熔断</h4><p>10 分钟内 3 次失败/可疑行为 → <b>锁定全部红色操作 5 分钟</b>；解除需人工确认并留痕。</p></div>
+      <div class="card"><h4>沙箱（无动态代码执行）</h4><p>运行时不使用 eval / Function / child_process；所有能力来自<b>工具白名单</b>；数据为本地模拟数据，不接真实接口。</p></div>
+    </div>
+    <div class="note">⚠️ 沙箱声明：模拟短信验证码与人脸识别仅用于演示，界面明确标注；真实实现应接入行内短信网关与活体检测 SDK（字段已预留、可替换）。</div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>技术架构 <span class="hint">五层职责分离</span></h2>
+    <img class="shot" src="docs/技术文档/系统架构图.png" alt="银枢·AI银行副驾 系统架构图">
+    <p class="meta">意图层只做规划不改数据 · 工具层 30 个能力逐项声明风险 · 门禁层决定能不能做 · <b>动作层是唯一动资金的地方</b> · 审计层记录发生了什么。</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>界面与演示 <span class="hint">红色多因子确认卡</span></h2>
+    <img class="shot" src="docs/showcase-red-card.jpg" alt="红色级别多因子确认卡片">
+    <p class="meta">分级依据直接写在卡片上（“当日累计转账 ¥2,000 超过 ¥1,000”）；两个因子未同时完成时，「确认执行」按钮保持禁用。</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>验证与质量 <span class="hint">把“合规”变成“可验证”</span></h2>
+    <table>
+      <tr><th style="width:230px">验证手段</th><th>结果</th></tr>
+      <tr><td><code>npm run selftest</code></td><td class="ok-line">329 项断言全部通过（数据/解析/风控/转账/账单/理财/卡片/跨场景/分级/注入/熔断）</td></tr>
+      <tr><td><code>npm run verify</code></td><td class="ok-line">20 项：真实链路与持久化（用独立进程读盘证明数据落盘）</td></tr>
+      <tr><td><code>npm run rehearsal</code></td><td class="ok-line">25 项：六场景全链路彩排并计时，现场约 180 秒</td></tr>
+      <tr><td>安全探针</td><td class="ok-line">目录穿越 6/6 拦截、异常输入 8/8 合规、泄露检查 5/5 通过、仅监听本机</td></tr>
+      <tr><td>独立复现（关键证据）</td><td>数据中预埋 4 笔异常，评分引擎扫描 303 笔支出后<b>恰好识别出这 4 笔且零误报</b>——不依赖任何预埋标记</td></tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>如何运行 <span class="hint">本地一键启动（推荐）</span></h2>
+    <pre>git clone https://github.com/hxxhhxxh/yinshu-banking-agent.git
+cd yinshu-banking-agent
+npm install &amp;&amp; npm start        # 或双击「启动银枢.bat」
+# 浏览器打开 http://127.0.0.1:8787
+# IM 渠道演示页： http://127.0.0.1:8787/im.html</pre>
+    <p class="meta">环境要求：Node.js ≥ 18，无需数据库、无需联网（未配置大模型时使用内置本地意图引擎，断网可完整演示）。</p>
+    <h3>文档索引</h3>
+    <p class="meta">
+      · 作品简介 / 方案正文 / 安全自评报告 / 报名信息表：<code>docs/提交材料/</code><br>
+      · 技术文档（架构图 / 核心算法说明 / 安全设计文档）：<code>docs/技术文档/</code><br>
+      · 3 分钟现场演示脚本 / 答辩问答预案 / 自测清单 / 部署说明：<code>docs/</code><br>
+      · 代码：<code>server/</code>（零依赖后端）与 <code>public/</code>（原生前端）
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><b>银枢 · AI银行副驾</b>　|　本页为作品展示页（静态）。系统本体为本地运行的 Node 服务，需要按上方说明启动；所有数据均为本地沙箱模拟数据，不接入任何真实支付、银行或商户接口。</p>
+    <p>仓库：<a href="https://github.com/hxxhhxxh/yinshu-banking-agent">github.com/hxxhhxxh/yinshu-banking-agent</a></p>
+  </div>
+</footer>
+</body>
+</html>
