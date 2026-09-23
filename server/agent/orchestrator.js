@@ -669,11 +669,12 @@ async function handleLocal(rawEmit, userText) {
     if (result.ok) {
       const isPending = Boolean(result.pending);
       const isBad = result.outcome === 'blocked' || result.outcome === 'rejected';
+      const isAsk = result.outcome === 'need_info';
       emit({
         type: 'step', id: nextId(), kind: 'tool_result',
-        title: `${tool.label} · ${isPending ? '已生成待确认单' : (isBad ? '未放行' : '执行成功')}`,
+        title: `${tool.label} · ${isAsk ? '需要补充信息' : (isPending ? '已生成待确认单' : (isBad ? '未放行' : '执行成功'))}`,
         detail: result.summary + (result.ms ? `（耗时 ${result.ms}ms）` : ''),
-        status: isBad ? 'warn' : 'done',
+        status: (isBad || isAsk) ? 'warn' : 'done',
         meta: { tool: step.tool },
       });
       if (result.ui) emit({ type: 'ui', patch: result.ui });
