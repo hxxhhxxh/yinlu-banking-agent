@@ -36,20 +36,20 @@ const DEMO_USER = {
 
 const CARDS = [
   {
-    id: 'CARD_D1', kind: 'debit', name: '银鹭储蓄卡', brand: '银联', level: '金葵花',
+    id: 'CARD_D1', kind: 'debit', name: '银枢储蓄卡', brand: '银联', level: '金葵花',
     numberMasked: '6225 **** **** 6688', tail: '6688', currency: 'CNY',
     balance: 128640.35, available: 128640.35, status: 'active',
     dailyLimit: 50000, singleLimit: 20000, monthlyLimit: 200000,
     issuedAt: '2019-08-12', color: 'blue',
   },
   {
-    id: 'CARD_C1', kind: 'credit', name: '银鹭信用卡·金卡', brand: '银联/Visa', level: '金卡',
+    id: 'CARD_C1', kind: 'credit', name: '银枢信用卡·金卡', brand: '银联/Visa', level: '金卡',
     numberMasked: '6225 **** **** 2317', tail: '2317', currency: 'CNY',
     creditLimit: 50000, usedCredit: 12340.62, available: 37659.38, status: 'active',
     billDay: 5, repayDay: 25, dailyLimit: 30000, singleLimit: 30000, color: 'teal',
   },
   {
-    id: 'CARD_C2', kind: 'credit', name: '银鹭信用卡·白金卡', brand: '银联/MasterCard', level: '白金卡',
+    id: 'CARD_C2', kind: 'credit', name: '银枢信用卡·白金卡', brand: '银联/MasterCard', level: '白金卡',
     numberMasked: '6225 **** **** 8890', tail: '8890', currency: 'CNY',
     creditLimit: 80000, usedCredit: 23110.4, available: 56889.6, status: 'active',
     billDay: 12, repayDay: 2, dailyLimit: 50000, singleLimit: 50000, color: 'indigo',
@@ -75,7 +75,7 @@ const SUBSCRIPTIONS = [
 
 // 6 款不同风险等级理财产品（R1~R5，与用户 C2 稳健型的适当性匹配是演示重点）
 const PRODUCTS = [
-  { id: 'W1', name: '银鹭现金宝·货币基金', code: 'YLMMF', riskLevel: 'R1', riskName: '低风险', type: '货币基金', expectedReturn: 1.85, term: '随存随取', minAmount: 1, fee: 0, liquidity: 'T+0', desc: '投资于短期货币工具，本金波动极小，适合存放待用资金。', suitableFor: ['C1', 'C2', 'C3', 'C4', 'C5'] },
+  { id: 'W1', name: '银枢现金宝·货币基金', code: 'YLMMF', riskLevel: 'R1', riskName: '低风险', type: '货币基金', expectedReturn: 1.85, term: '随存随取', minAmount: 1, fee: 0, liquidity: 'T+0', desc: '投资于短期货币工具，本金波动极小，适合存放待用资金。', suitableFor: ['C1', 'C2', 'C3', 'C4', 'C5'] },
   { id: 'W2', name: '稳健添利·固收类理财', code: 'YLFIX90', riskLevel: 'R2', riskName: '中低风险', type: '固定收益类', expectedReturn: 3.25, term: '90 天', minAmount: 1000, fee: 0.2, liquidity: 'T+1', desc: '以债券等固收资产为主，历史回撤小，收益相对稳定。', suitableFor: ['C2', 'C3', 'C4', 'C5'] },
   { id: 'W3', name: '安心存·大额存单（20万起）', code: 'YLCD36', riskLevel: 'R2', riskName: '中低风险', type: '大额存单', expectedReturn: 2.6, term: '3 年', minAmount: 200000, fee: 0, liquidity: '可转让', desc: '存款类产品，受存款保险保障（50 万以内本息全额保障）。', suitableFor: ['C1', 'C2', 'C3', 'C4', 'C5'] },
   { id: 'W4', name: '均衡配置·混合型基金', code: 'YLBLD', riskLevel: 'R3', riskName: '中风险', type: '混合型基金', expectedReturn: 5.8, term: '建议持有 1 年以上', minAmount: 100, fee: 0.6, liquidity: 'T+1', desc: '股债均衡配置，净值会有波动，适合能承受一定回撤的客户。', suitableFor: ['C3', 'C4', 'C5'] },
@@ -96,7 +96,7 @@ const MERCHANTS = {
   通讯数码: [['Apple Store', 129, 1800], ['京东数码', 199, 2600]],
 };
 const DEBIT_CATEGORIES = new Set(['生活缴费', '住房', '餐饮', '交通', '医疗', '通讯数码']);
-const INCOME_SOURCES = [['工资-银鹭科技', 12000, 12000], ['奖学金', 800, 3000], ['兼职收入', 500, 2500], ['退款', 20, 300]];
+const INCOME_SOURCES = [['工资-银枢科技', 12000, 12000], ['奖学金', 800, 3000], ['兼职收入', 500, 2500], ['退款', 20, 300]];
 
 function fmtDate(d) {
   const p = (n) => String(n).padStart(2, '0');
@@ -238,7 +238,7 @@ function buildSeedState(opts = {}) {
   const endDate = opts.endDate ? new Date(opts.endDate) : new Date('2026-09-22T12:00:00+08:00');
   return {
     meta: {
-      project: '银鹭·AI银行副驾',
+      project: '银枢·AI银行副驾',
       version: '0.1.0',
       sandbox: true,
       generatedAt: fmtDateTime(endDate),
