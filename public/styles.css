@@ -633,3 +633,91 @@ button { font-family: inherit; cursor: pointer; }
   .bank-panel { max-height: 52vh; }
   .stat-row { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ============ 手机端适配（≤760px）：对话为主，银行面板做成底部抽屉 ============ */
+.panel-toggle { display: none; }
+.panel-backdrop { display: none; }
+
+@media (max-width: 760px) {
+  html, body { height: 100%; overflow: hidden; }
+  body { font-size: 15px; }
+  .app { height: 100dvh; }
+
+  .layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    gap: 0; padding: 0;
+  }
+  .chat-panel { border-radius: 0; box-shadow: none; }
+  .panel-head { height: 52px; padding: 0 12px; }
+  .panel-title { font-size: 14px; }
+  .panel-actions .btn-ghost, .panel-head button { font-size: 12px; padding: 6px 9px; }
+
+  /* 消息气泡与内部表格 */
+  .msg { max-width: 96%; }
+  .bubble { font-size: 14.5px; padding: 10px 12px; border-radius: 12px; }
+  .bubble table { display: block; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .bubble pre, .bubble code { font-size: 12.5px; }
+  .trace { font-size: 12.5px; }
+
+  /* 输入区：贴底、避开 iPhone 底部横条、字号≥16px 防 iOS 自动放大 */
+  .composer { padding: 8px 10px calc(10px + env(safe-area-inset-bottom)); gap: 8px; }
+  .composer textarea { font-size: 16px; min-height: 44px; max-height: 108px; padding: 11px 12px; }
+  .composer .btn-primary { min-height: 44px; padding: 0 16px; }
+  .chips { padding: 6px 10px 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
+  .chip { white-space: nowrap; }
+
+  /* 待确认卡片：触控友好 */
+  .confirm-card { margin-left: 0; margin-right: 0; }
+  .cf-form { flex-wrap: wrap; padding: 10px 12px; }
+  .cf-form .btn-primary, .cf-form .btn-ghost { min-height: 42px; flex: 1 1 auto; }
+  .cf-field { flex-wrap: wrap; }
+  .cf-field input { max-width: none; width: 100%; font-size: 16px; min-height: 42px; }
+  .cf-field label { flex: 1 1 100%; }
+
+  /* 银行面板 → 底部抽屉 */
+  .bank-panel {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    max-height: 84dvh; border-radius: 16px 16px 0 0;
+    padding: 14px 12px calc(16px + env(safe-area-inset-bottom));
+    box-shadow: 0 -12px 40px rgba(16, 24, 40, .28);
+    transform: translateY(102%);
+    transition: transform .26s ease;
+    will-change: transform;
+    overscroll-behavior: contain;
+  }
+  .bank-panel.open { transform: translateY(0); }
+  .bank-frame { border-radius: 12px; }
+  .bank-panel::before {
+    content: ""; position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+    width: 42px; height: 4px; border-radius: 999px; background: #D0D5DD;
+  }
+  .panel-backdrop {
+    display: block; position: fixed; inset: 0; z-index: 35;
+    background: rgba(16, 24, 40, .35); opacity: 0; pointer-events: none;
+    transition: opacity .26s ease;
+  }
+  .panel-backdrop.show { opacity: 1; pointer-events: auto; }
+
+  /* 浮动开关 */
+  .panel-toggle {
+    display: inline-flex; align-items: center; gap: 6px;
+    position: fixed; right: 12px; bottom: calc(86px + env(safe-area-inset-bottom)); z-index: 45;
+    background: var(--blue-700); color: #fff; border: none; border-radius: 999px;
+    padding: 11px 16px; font-size: 13.5px; box-shadow: 0 6px 20px rgba(11, 61, 128, .35);
+  }
+  .panel-toggle:active { transform: scale(.97); }
+
+  /* 图表与网格 */
+  .stat-row { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .mono-chart { height: 84px; }
+  .bar-row { grid-template-columns: 54px 1fr 76px; font-size: 11.5px; }
+  .cards-carousel { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .card { scroll-snap-align: start; }
+  .sub-row, .tr-row, .prod-card, .anomaly-card { font-size: 12.5px; }
+}
+
+@media (max-width: 400px) {
+  .stat-row { grid-template-columns: 1fr; }
+  .cf-form .btn-primary, .cf-form .btn-ghost { flex: 1 1 100%; }
+}
