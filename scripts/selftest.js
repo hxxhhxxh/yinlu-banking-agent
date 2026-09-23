@@ -107,6 +107,14 @@ function section(t) { console.log(`\n【${t}】`); }
   ok(rUn.rule && rUn.rule.tool === 'undo_last_transfer', '“撤销最近一笔转账”→ 撤销（不被普通转账抢走）', rUn.rule && rUn.rule.tool);
   const rCard = local.resolveIntent('我想办一张白金卡', isImpl);
   ok(rCard.rule && rCard.rule.tool === 'apply_card', '“我想办一张白金卡”→ 卡片申请', rCard.rule && rCard.rule.tool);
+  const rCards2 = local.resolveIntent('我有几张卡，额度分别多少', isImpl);
+  ok(rCards2.rule && rCards2.rule.tool === 'query_cards', '“我有几张卡，额度分别多少”→ 卡片查询（不被额度调整抢走）', rCards2.rule && rCards2.rule.tool);
+  const rCards3 = local.resolveIntent('我卡的额度是多少', isImpl);
+  ok(rCards3.rule && rCards3.rule.tool === 'query_cards', '“我卡的额度是多少”→ 卡片查询', rCards3.rule && rCards3.rule.tool);
+  const rAdj = local.resolveIntent('把金卡额度提到六万', isImpl);
+  ok(rAdj.rule && rAdj.rule.tool === 'adjust_credit_limit', '“把金卡额度提到六万”→ 额度调整（含动作词才命中）', rAdj.rule && rAdj.rule.tool);
+  const rAdj2 = local.resolveIntent('把信用卡额度降到 3 万', isImpl);
+  ok(rAdj2.rule && rAdj2.rule.tool === 'adjust_credit_limit', '“额度降到 3 万”→ 额度调整', rAdj2.rule && rAdj2.rule.tool);
   const rHold = local.resolveIntent('我的理财赚了多少', isImpl);
   ok(rHold.rule && rHold.rule.tool === 'query_holdings', '“我的理财赚了多少”→ 持仓查询（不被推荐抢走）', rHold.rule && rHold.rule.tool);
   const rBuy = local.resolveIntent('拿一万块买理财，帮我挑个收益最高的', isImpl);
