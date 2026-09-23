@@ -759,6 +759,60 @@ function section(t) { console.log(`\n【${t}】`); }
   ok(resEsc.ok === true && !resEsc.state.humanTakeover, '结束接管后恢复自动服务');
   store.get().humanTakeover = null; store.save(true);
 
+  section('意图路由审计（60 句真实说法逐条比对）');
+  const ROUTE_CASES = [
+    ['储蓄卡还有多少钱', 'query_balance'],
+    ['我有几张卡，额度分别多少', 'query_cards'],
+    ['我卡的额度是多少', 'query_cards'],
+    ['我的可用额度有多少', 'query_cards'],
+    ['信用卡还能刷多少', 'query_cards'],
+    ['帮我把金卡额度提到六万', 'adjust_credit_limit'],
+    ['帮我把额度降到三万', 'adjust_credit_limit'],
+    ['额度能不能提高一点', 'adjust_credit_limit'],
+    ['把信用卡单笔限额降到 5000', 'set_card_limit'],
+    ['帮我把这张卡冻结', 'set_card_limit'],
+    ['卡片锁了，帮我解开', 'set_card_limit'],
+    ['给我妈转两千块交物业费', 'transfer_money'],
+    ['帮我把房租转给房东', 'transfer_money'],
+    ['给陈小雨转两万，尾号7742，有没有风险', 'preview_transfer'],
+    ['帮我看看这笔转账有没有风险', 'preview_transfer'],
+    ['我妈转两万没问题吧', 'preview_transfer'],
+    ['撤销最近一笔转账', 'undo_last_transfer'],
+    ['回退上一步', 'undo_last_action'],
+    ['每月1号给房东转2200房租', 'schedule_transfer'],
+    ['我们四个人吃饭花了800，跟室友和同学AA', 'split_aa_collect'],
+    ['看看我的转账记录', 'query_transfers'],
+    ['帮我统计一下上个月的开销', 'analyze_bills'],
+    ['看一下今年的年度账单', 'analyze_bills'],
+    ['我的卡是不是被盗刷了', 'detect_anomalies'],
+    ['有哪些订阅在扣我钱', 'list_subscriptions'],
+    ['把那个老扣我钱的会员关了', 'cancel_subscription'],
+    ['帮我取消腾讯视频的自动续费', 'cancel_subscription'],
+    ['我的理财赚了多少', 'query_holdings'],
+    ['帮我做个风险评估', 'assess_risk'],
+    ['拿五千块买现金宝', 'purchase_product'],
+    ['把现金宝全部赎回', 'redeem_product'],
+    ['我想办一张白金卡', 'apply_card'],
+    ['我那张白金卡找不到了，先挂失', 'report_card_loss'],
+    ['把白金卡解挂', 'report_card_unfreeze'],
+    ['密码忘了怎么办', 'change_password'],
+    ['下周我妈生日，帮我安排一下', 'gift_concierge'],
+    ['模拟到期，把生日安排执行了', 'run_scheduled'],
+    ['你好', 'smalltalk'],
+    ['在吗', 'smalltalk'],
+  ];
+  let routeBad = [];
+  for (const [q, expect] of ROUTE_CASES) {
+    const r = local.resolveIntent(q, isImpl);
+    const got = r.rule ? r.rule.intent : null;
+    if (got !== expect) routeBad.push(`「${q}」→${got || '未识别'}≠${expect}`);
+  }
+  ok(routeBad.length === 0, `意图路由审计全部通过（${ROUTE_CASES.length} 句真实说法）`, routeBad.join('；') || '无冲突');
+  const rv = local.resolveIntent('帮我办一张虚拟卡', isImpl);
+  ok(rv.rule && rv.rule.intent === 'apply_virtual_card', '虚拟卡与实体卡区分正确（共用工具但不共用意图）', rv.rule && rv.rule.intent);
+  const rvPlan = local.buildPlan(rv.rule, '帮我办一张虚拟卡');
+  ok(rvPlan[0].args.cardType === '虚拟卡', '虚拟卡意图携带正确参数', JSON.stringify(rvPlan[0].args));
+
   section('全程留痕（审计日志）');
   const before = store.get().auditLog.length;
   await orchestrator.handle('储蓄卡还有多少钱', { emit: () => {} });
