@@ -11,7 +11,8 @@
     "selftest": "node scripts/selftest.js",
     "verify": "node scripts/verify-real-chain.js",
     "rehearsal": "node scripts/rehearsal.js",
-    "reset": "node scripts/reset.js"
+    "reset": "node scripts/reset.js",
+    "audit": "node scripts/audit-routing.js"
   },
   "engines": {
     "node": ">=18"
