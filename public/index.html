@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>银枢·AI银行副驾 | YinShu AI Banking Copilot</title>
 <link rel="stylesheet" href="/styles.css" />
 </head>
@@ -133,6 +133,10 @@
       </div>
     </section>
   </main>
+
+  <!-- 手机端：银行面板开关 + 遮罩（桌面端自动隐藏） -->
+  <button class="panel-toggle" id="panelToggle" type="button">🏦 银行面板</button>
+  <div class="panel-backdrop" id="panelBackdrop"></div>
 </div>
 
 <script src="/app.js"></script>
