@@ -639,6 +639,10 @@ function renderStep(turn, evt) {
 
 function applyUiPatch(patch) {
   if (!patch) return;
+  // 手机端：需要看界面联动时，自动拉出底部银行面板
+  if ((patch.scrollTo || patch.focusCards || patch.highlightTxnIds || patch.panelTxns || patch.panelGift || patch.panelSubscriptions || patch.riskPanel) && typeof window.touchPanelAutoOpen === 'function') {
+    window.touchPanelAutoOpen();
+  }
   if (patch.focusCards) renderCards(patch.focusCards);
   if (patch.panelTxns) {
     PANEL_FILTER = { txns: patch.panelTxns, label: patch.panelLabel || '本次查询' };
@@ -834,6 +838,30 @@ function bind() {
     const tab = e.target.closest('.tab');
     if (tab) { switchTab(tab.dataset.tab); return; }
   });
+
+  const toggle = $('#panelToggle');
+  const backdrop = $('#panelBackdrop');
+  const bankPanel = document.querySelector('.bank-panel');
+  window.touchPanelAutoOpen = () => {
+    if (!bankPanel) return;
+    if (!window.matchMedia('(max-width: 760px)').matches) return;
+    bankPanel.classList.add('open');
+    if (backdrop) backdrop.classList.add('show');
+    if (toggle) toggle.textContent = '✕ 收起';
+  };
+  if (toggle && bankPanel) {
+    toggle.addEventListener('click', () => {
+      const open = !bankPanel.classList.contains('open');
+      bankPanel.classList.toggle('open', open);
+      if (backdrop) backdrop.classList.toggle('show', open);
+      toggle.textContent = open ? '✕ 收起' : '🏦 银行面板';
+    });
+    if (backdrop) backdrop.addEventListener('click', () => {
+      bankPanel.classList.remove('open');
+      backdrop.classList.remove('show');
+      toggle.textContent = '🏦 银行面板';
+    });
+  }
 
   $('#btnClear').addEventListener('click', async () => {
     chatScroll().innerHTML = '';
