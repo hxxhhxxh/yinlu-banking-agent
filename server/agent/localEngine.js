@@ -22,7 +22,8 @@ const INTENT_RULES = [
   {
     // 必须排在 transfer_money 之前：用户问的是"能不能转/有没有风险"，要的是预检而不是执行
     intent: 'preview_transfer', label: '转账风控预检', tool: 'preview_transfer', phase: 1,
-    patterns: [/能不能转/, /能转多少/, /行不行/, /有没有风险/, /有风险吗/, /转得过去吗/, /预检/, /帮我看看.{0,6}转/, /这笔转/, /风险评估/],
+    guard: (t) => /转|打款|汇款|付款|这笔|金额/.test(t),
+    patterns: [/能不能转/, /能转多少/, /行不行/, /有没有风险/, /有风险吗/, /转得过去吗/, /预检/, /帮我看看.{0,6}转/, /这笔转/, /没问题吧/, /安全吗/, /可以吗/],
   },
   {
     // 必须排在 undo_last_transfer 之前："撤销上一步"含"撤销"
@@ -45,7 +46,7 @@ const INTENT_RULES = [
   },
   {
     intent: 'transfer_money', label: '智能转账', tool: 'transfer_money', phase: 2,
-    patterns: [/转账/, /转钱/, /转点/, /打钱/, /汇款/, /给.{0,6}(转|打|汇)/, /帮忙交/, /交个?物业费/],
+    patterns: [/转账/, /转钱/, /转点/, /打钱/, /汇款/, /给.{0,6}(转|打|汇)/, /(转|打|汇)(给|到)/, /把.{0,8}(转|打|汇)/, /帮忙交/, /交个?物业费/],
   },
   {
     intent: 'analyze_bills', label: '账单分析', tool: 'analyze_bills', phase: 3, degradeTo: 'query_transactions',
@@ -62,7 +63,7 @@ const INTENT_RULES = [
   {
     // 必须排在 list_subscriptions 之前："把那个老扣我钱的会员关了" 同时命中两者，语义上应以"取消"为准
     intent: 'cancel_subscription', label: '取消订阅', tool: 'cancel_subscription', phase: 3,
-    patterns: [/取消.{0,6}(订阅|会员|续费|包月)/, /(关掉|关闭|停掉|退掉).{0,8}(订阅|会员|续费|包月)/, /把那个.{0,10}关/, /别再扣/, /不想再(交|付|续)/, /退订/],
+    patterns: [/取消.{0,12}(订阅|会员|续费|包月)/, /(关掉|关闭|停掉|退掉).{0,12}(订阅|会员|续费|包月)/, /取消[^，。]{0,10}(视频|音乐|相册|PLUS|宝|宽带)/, /把那个.{0,10}关/, /别再扣/, /不想再(交|付|续)/, /退订/],
   },
   {
     intent: 'list_subscriptions', label: '订阅/代扣查询', tool: 'list_subscriptions', phase: 3, degradeTo: 'query_transactions',
@@ -79,7 +80,7 @@ const INTENT_RULES = [
   },
   {
     intent: 'assess_risk', label: '风险测评', tool: 'assess_risk', phase: 4,
-    patterns: [/风险测评/, /风险等级/, /我的风险/, /测评/],
+    patterns: [/风险测评/, /风险等级/, /我的风险/, /测评/, /风险评估/, /风险等级/, /评估.{0,4}风险/],
   },
   {
     intent: 'purchase_product', label: '理财申购', tool: 'purchase_product', phase: 4,
@@ -100,7 +101,7 @@ const INTENT_RULES = [
   },
   {
     intent: 'change_password', label: '交易密码修改', tool: 'change_password', phase: 7,
-    patterns: [/改.{0,3}密码/, /修改密码/, /重置密码/, /换密码/, /密码改/],
+    patterns: [/改.{0,3}密码/, /修改密码/, /重置密码/, /换密码/, /密码改/, /忘记密码/, /密码忘/, /密码丢/, /找回密码/],
   },
   {
     // 必须带"改额度"的动作词，否则"额度多少/额度分别多少"这类查询会被抢走
@@ -110,7 +111,7 @@ const INTENT_RULES = [
   },
   {
     intent: 'set_card_limit', label: '交易限额/解锁', tool: 'set_card_limit', phase: 4,
-    patterns: [/限额/, /限制交易/, /解锁/, /冻结/, /解冻/],
+    patterns: [/限额/, /限制交易/, /解锁/, /解冻/, /冻结/, /锁了/, /锁上/, /锁住/, /锁定卡/, /解开/],
   },
   {
     // 必须排在 apply_card 之前："办张虚拟卡"会被 /办.{0,6}卡/ 抢走
@@ -119,6 +120,7 @@ const INTENT_RULES = [
   },
   {
     intent: 'apply_card', label: '卡片申请', tool: 'apply_card', phase: 4,
+    guard: (t) => !/虚拟/.test(t),
     patterns: [/办卡/, /办.{0,6}卡/, /申请.{0,4}卡/, /新卡/, /开卡/, /想要一张/],
   },
   {
@@ -127,6 +129,7 @@ const INTENT_RULES = [
   },
   {
     intent: 'query_balance', label: '查询余额', tool: 'query_balance', phase: 1,
+    guard: (t) => !/[额度]/.test(t),
     patterns: [/余额/, /还有多少钱/, /有多少钱/, /多少钱/, /查账/, /资产/, /可用额度/, /欠多少/, /剩多少/],
   },
   {
@@ -139,7 +142,7 @@ const INTENT_RULES = [
   },
   {
     intent: 'query_cards', label: '查询名下卡片', tool: 'query_cards', phase: 1,
-    patterns: [/我有几张卡/, /几张卡/, /有哪些卡/, /我的卡/, /银行卡/, /卡片/, /信用卡/, /储蓄卡/, /额度多少/, /额度分别/, /额度是/, /卡.{0,2}额度/],
+    patterns: [/我有几张卡/, /几张卡/, /有哪些卡/, /我的卡/, /银行卡/, /卡片/, /信用卡/, /储蓄卡/, /可用额度/, /额度[^，。]{0,3}(多少|几|是)/, /额度分别/, /额度多少/, /额度是/, /卡.{0,2}额度/],
   },
   {
     intent: 'query_profile', label: '查询用户画像', tool: 'query_profile', phase: 1,
