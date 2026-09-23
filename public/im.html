@@ -30,6 +30,20 @@
   .tip { font-size: 11.5px; color: #667085; text-align: center; padding-bottom: 8px; }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px 10px; }
   .chips span { font-size: 11.5px; background: #fff; border: 1px solid #E4E7EC; border-radius: 999px; padding: 4px 9px; cursor: pointer; }
+  @media (max-width: 520px) {
+    body { background: #F5F6F8; }
+    .phone { width: 100%; height: 100dvh; max-height: none; box-shadow: none; }
+    .hd { padding: 10px 14px calc(10px + env(safe-area-inset-top)); }
+    .chat { padding: 12px; gap: 10px; }
+    .msg { max-width: 92%; }
+    .bub { font-size: 14px; }
+    .composer { padding: 8px 10px calc(12px + env(safe-area-inset-bottom)); }
+    .composer input { font-size: 16px; min-height: 42px; }
+    .composer button { min-height: 42px; padding: 0 14px; }
+    .chips { overflow-x: auto; flex-wrap: nowrap; padding: 0 10px 8px; }
+    .chips span { white-space: nowrap; }
+    .bub table { display: block; overflow-x: auto; }
+  }
 </style>
 </head>
 <body>
