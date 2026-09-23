@@ -103,7 +103,9 @@ const INTENT_RULES = [
     patterns: [/改.{0,3}密码/, /修改密码/, /重置密码/, /换密码/, /密码改/],
   },
   {
+    // 必须带"改额度"的动作词，否则"额度多少/额度分别多少"这类查询会被抢走
     intent: 'adjust_credit_limit', label: '额度调整', tool: 'adjust_credit_limit', phase: 4,
+    guard: (t) => /提到|提升|提高|升到|调高|调到|调整到|改成|设为|降额|降低|降到|调低/.test(t),
     patterns: [/额度/, /提额/, /降额/],
   },
   {
@@ -137,7 +139,7 @@ const INTENT_RULES = [
   },
   {
     intent: 'query_cards', label: '查询名下卡片', tool: 'query_cards', phase: 1,
-    patterns: [/我有几张卡/, /我的卡/, /银行卡/, /卡片/, /信用卡/, /储蓄卡/],
+    patterns: [/我有几张卡/, /几张卡/, /有哪些卡/, /我的卡/, /银行卡/, /卡片/, /信用卡/, /储蓄卡/, /额度多少/, /额度分别/, /额度是/, /卡.{0,2}额度/],
   },
   {
     intent: 'query_profile', label: '查询用户画像', tool: 'query_profile', phase: 1,
