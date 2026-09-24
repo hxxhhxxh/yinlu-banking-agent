@@ -640,7 +640,11 @@ function renderStep(turn, evt) {
 function applyUiPatch(patch) {
   if (!patch) return;
   // 手机端：需要看界面联动时，自动拉出底部银行面板
-  if ((patch.scrollTo || patch.focusCards || patch.highlightTxnIds || patch.panelTxns || patch.panelGift || patch.panelSubscriptions || patch.riskPanel) && typeof window.touchPanelAutoOpen === 'function') {
+  // 手机端：只在真正需要看图时才自动拉出底部面板
+  // 交易明细 / 生日安排 / 订阅清单：面板里有列表要看；风控拦截或业务拒绝：安全高光值得展示。
+  // 其余情况（普通查询、待确认卡片、理财推荐、账单统计）答案已在对话里，不自动打扰，需要时点右下角按钮。
+  const needPanel = Boolean(patch.panelTxns) || Boolean(patch.panelGift) || Boolean(patch.panelSubscriptions) || Boolean(patch.riskPanel && ['block', 'reject'].includes(patch.riskPanel.decision));
+  if (needPanel && typeof window.touchPanelAutoOpen === 'function') {
     window.touchPanelAutoOpen();
   }
   if (patch.focusCards) renderCards(patch.focusCards);
